@@ -1,7 +1,9 @@
 import axios from 'axios'
 import { DUMMY_DASHBOARD, DUMMY_SCORE, DUMMY_ADVISORY } from './useAppState'
 
-const BASE = '/api'
+const BASE = import.meta.env.VITE_API_URL
+  ? import.meta.env.VITE_API_URL.replace(/\/$/, '')  // Railway URL in production
+  : '/api'                                            // Vite proxy in local dev
 export const USE_DUMMY = false
 
 function delay(ms) {

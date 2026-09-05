@@ -64,21 +64,12 @@ app.include_router(analyze.router)
 
 
 @app.get("/", tags=["Health"])
+@app.head("/", tags=["Health"])
 async def root():
     return {
         "name": settings.app_name,
         "version": settings.app_version,
         "status": "ok",
-        "docs": "/docs",
-        "attribution": "Weather & air quality data by Open-Meteo (CC-BY 4.0)",
-        "endpoints": [
-            "GET  /dashboard?city=Delhi",
-            "GET  /hourly-forecast?city=Delhi",
-            "POST /exposure-score",
-            "POST /advisory",
-            "POST /analyze",
-            "GET  /health",
-        ],
     }
 
 
