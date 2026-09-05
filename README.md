@@ -1,5 +1,7 @@
 # VayuDrishti
 
+**Live demo → https://vayu-drishti-ys2l.vercel.app/**
+
 Air quality intelligence for Indian cities — personalised exposure scores, real-time AQI, and AI-generated health advisories.
 
 Live weather and pollution data from [Open-Meteo](https://open-meteo.com) (free, no API key required). AI advisories powered by Google Gemini.
