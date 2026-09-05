@@ -1,0 +1,226 @@
+/* ── Header ──────────────────────────────────────────────────────────────── */
+.cityRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.livePulse {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: pulse 2.2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{transform:scale(1);} 50%{transform:scale(1.4);opacity:0.7;} }
+.cityName {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+}
+.profileBtn {
+  padding: 8px 18px;
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(255,255,255,0.26);
+  border-radius: 8px;
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: background 0.2s, transform 0.2s;
+  white-space: nowrap;
+}
+.profileBtn:hover { background: rgba(255,255,255,0.24); transform: translateY(-1px); }
+
+/* ── Two-column layout — equal proportions ───────────────────────────────── */
+.leftCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  min-width: 0;
+}
+.leftCol::-webkit-scrollbar { display: none; }
+
+/* ── AQI hero ────────────────────────────────────────────────────────────── */
+.aqiHero {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+.aqiNum {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: clamp(3.6rem, 7vw, 5.8rem);
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-shadow: 0 0 40px currentColor, 0 2px 16px rgba(0,0,0,0.5);
+  transition: color 0.5s;
+  flex-shrink: 0;
+}
+.aqiMeta {
+  padding-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.aqiLabel {
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+}
+.aqiScale {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.50);
+}
+.aqiBand {
+  display: flex;
+  height: 4px;
+  width: 150px;
+  border-radius: 4px;
+  overflow: hidden;
+  gap: 2px;
+  margin-top: 2px;
+}
+.aqiBandSeg {
+  flex: 1;
+  position: relative;
+  border-radius: 2px;
+}
+.aqiBandPin {
+  position: absolute;
+  top: -4px; left: 50%;
+  transform: translateX(-50%);
+  width: 2px; height: 12px;
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 0 5px rgba(255,255,255,0.9);
+}
+.weatherBadge {
+  display: inline-flex;
+  align-self: flex-start;
+  padding: 3px 10px;
+  border: 1px solid;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.10);
+  transition: color 0.5s, border-color 0.5s;
+  white-space: nowrap;
+}
+
+/* ── AQI description ─────────────────────────────────────────────────────── */
+.aqiDesc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.80);
+  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+  font-weight: 400;
+}
+
+/* ── 24h trend card — compact, not sprawling ─────────────────────────────── */
+.trendCard {
+  padding: 12px 14px 18px;
+  flex: 0 0 auto;    /* never stretch */
+}
+.trendBars {
+  display: flex;
+  align-items: flex-end;
+  height: 52px;
+  gap: 2px;
+}
+.trendBar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+.trendBar:hover { opacity: 0.75; }
+.trendFill {
+  width: 100%;
+  border-radius: 2px 2px 0 0;
+  min-height: 2px;
+}
+.trendTick {
+  position: absolute;
+  bottom: -15px;
+  font-size: 8px;
+  color: rgba(255,255,255,0.38);
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Right cards column — equal flex, 2×2 grid ───────────────────────────── */
+.cardsCol {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  gap: 8px;
+  align-content: start;
+  min-width: 0;
+}
+
+/* Coordinates card — matches ReadoutCard style, spans both columns */
+.coordCard {
+  position: relative;
+  background: rgba(255,255,255,0.18);
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.08);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.08);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 16px;
+  padding: 16px 20px 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.coordStripe {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: #94A3B8;
+  border-radius: 16px 16px 0 0;
+  opacity: 0.7;
+}
+.coordPulse {
+  position: absolute;
+  top: 14px; right: 16px;
+}
+.coordDot {
+  display: block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #94A3B8;
+  box-shadow: 0 0 6px #94A3B8;
+}
+.coordBody {
+  padding-top: 6px;
+}
+.coordValue {
+  font-family: 'DM Mono', monospace;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: #fff;
+  letter-spacing: 0.02em;
+  filter: drop-shadow(0 1px 6px rgba(0,0,0,0.25));
+}
+.coordLabel {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  margin-top: 5px;
+}

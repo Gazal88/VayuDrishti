@@ -1,0 +1,62 @@
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: slowZoom 35s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes slowZoom {
+  from { transform: scale(1.0); }
+  to   { transform: scale(1.05); }
+}
+
+/* Dark overlay — kept very light so the photo actually shows */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  pointer-events: none;
+}
+
+/* Vignette — subtle edge darkening only, not a blanket cover */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 120% 110% at 50% 50%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.30) 100%
+  );
+}
+
+/* Left fade — just enough for panel legibility, not a wall of black */
+.leftFade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    108deg,
+    rgba(0, 0, 0, 0.32) 0%,
+    rgba(0, 0, 0, 0.16) 35%,
+    transparent 58%
+  );
+}
+
+/* Canvas weather FX */
+.canvas {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}

@@ -1,0 +1,106 @@
+.card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(24px) saturate(160%) brightness(1.08);
+  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.08);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+  padding: 20px 22px 16px;
+  overflow: hidden;
+  cursor: default;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12), 0 1px 4px rgba(0,0,0,0.08);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Top accent stripe */
+.stripe {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: 16px 16px 0 0;
+  opacity: 0.85;
+}
+
+/* Pulse indicator */
+.pulse {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+}
+.pulseDot {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.pulseRing {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid;
+  opacity: 0;
+  animation: ring 2.8s ease-out infinite;
+}
+@keyframes ring {
+  0%   { transform: scale(0.5); opacity: 0.9; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* Value */
+.value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 2.6rem;
+  line-height: 1;
+  margin-top: 10px;
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  filter: drop-shadow(0 1px 8px rgba(0,0,0,0.25));
+}
+.unit {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.60);
+  padding-bottom: 3px;
+  letter-spacing: 0.03em;
+}
+.label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-top: 6px;
+}
+.sublabel {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.50);
+  margin-top: 2px;
+}
+
+/* Sparkline */
+.spark {
+  display: block;
+  margin-top: 10px;
+}
+
+/* Hover glint sweep */
+.glint {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255,255,255,0.12) 50%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  border-radius: inherit;
+}
+.card:hover .glint { opacity: 1; }

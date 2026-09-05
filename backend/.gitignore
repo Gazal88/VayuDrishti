@@ -1,0 +1,14 @@
+# VayuDrishti — Origin Hackathon PS-4 Backend
+# AI-Powered Personalized Weather & AQI Health Advisory
+
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.env
+.mypy_cache/
+.ruff_cache/
+*.log
+.DS_Store

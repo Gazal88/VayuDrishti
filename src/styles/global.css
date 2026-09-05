@@ -1,0 +1,407 @@
+/* ─── DESIGN TOKENS ──────────────────────────────────────────────────────────
+   Dynamic tokens are overwritten at runtime by useTheme() per weather condition.
+   Defaults here = clear-sky theme.
+   ─────────────────────────────────────────────────────────────────────────── */
+:root {
+  --accent:        #38BDF8;
+  --accent-rgb:    56, 189, 248;
+  --glow:          rgba(56, 189, 248, 0.22);
+  --panel-border:  rgba(255, 255, 255, 0.28);
+  --panel-bg:      rgba(255, 255, 255, 0.18);
+  --panel-bg-mid:  rgba(255, 255, 255, 0.12);
+  --text-primary:  #FFFFFF;
+  --text-secondary:#E8F4FD;
+  --text-muted:    rgba(255, 255, 255, 0.65);
+  --text-faint:    rgba(255, 255, 255, 0.38);
+
+  /* AQI badge — never change */
+  --aqi-good:  #34D399;
+  --aqi-mod:   #FBBF24;
+  --aqi-usg:   #F97316;
+  --aqi-unh:   #EF4444;
+  --aqi-vunh:  #C026D3;
+  --aqi-haz:   #7C2D12;
+
+  /* Structure */
+  --bg-deep:  #0A1628;
+  --r-sm:  6px;
+  --r-md:  12px;
+  --r-lg:  20px;
+  --r-xl:  28px;
+
+  /* Fonts */
+  --font-sans:  'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-serif: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono:  'DM Mono', 'Fira Code', monospace;
+
+  /* Easing */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Shadows */
+  --shadow-card:  0 8px 32px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.12);
+  --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ─── RESET ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: color 0.7s ease;
+}
+
+/* ─── SCROLLBAR ──────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+/* ─── PAGE WRAPPER ───────────────────────────────────────────────────────── */
+.page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+}
+
+/* ─── FROSTED GLASS PANELS ───────────────────────────────────────────────── */
+/* Light frosted glass — sits on top of photo, lets it breathe through */
+.panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
+  -webkit-backdrop-filter: blur(22px) saturate(160%) brightness(1.05);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  transition: background 0.7s ease, border-color 0.7s ease, box-shadow 0.3s ease;
+}
+
+.panel:hover {
+  box-shadow: var(--shadow-hover);
+}
+
+/* Mid-opacity variant for nested content */
+.panel-mid {
+  background: var(--panel-bg-mid);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--r-md);
+}
+
+/* Header / Footer bars — still slightly dark for contrast with content */
+.glass-bar {
+  background: rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(28px) saturate(150%);
+  -webkit-backdrop-filter: blur(28px) saturate(150%);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* ─── HEADER / FOOTER ────────────────────────────────────────────────────── */
+.app-header {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.20);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+}
+
+.app-footer {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.20);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+}
+
+/* ─── TYPOGRAPHY ─────────────────────────────────────────────────────────── */
+.font-serif { font-family: var(--font-serif); }
+.font-mono  { font-family: var(--font-mono); }
+
+.text-accent    { color: var(--accent); }
+.text-muted     { color: var(--text-muted); }
+.text-faint     { color: var(--text-faint); }
+.text-primary   { color: var(--text-primary); }
+
+/* Eyebrow labels */
+.eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.6s;
+}
+
+/* Mono tags */
+.mono-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+}
+
+/* ─── LIVE BADGE ─────────────────────────────────────────────────────────── */
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 14px;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 40px;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #fff;
+  backdrop-filter: blur(12px);
+  transition: background 0.6s, border-color 0.6s;
+}
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: livePulse 2s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%       { transform: scale(1.5); opacity: 0.6; }
+}
+
+/* ─── BUTTONS ────────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 28px;
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  border: none;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s var(--ease-spring),
+              box-shadow 0.25s ease,
+              background 0.6s ease;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.20) 0%, transparent 55%);
+  pointer-events: none;
+}
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 36px rgba(var(--accent-rgb), 0.45);
+}
+.btn-primary:active { transform: translateY(0) scale(0.99); }
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 22px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: var(--r-md);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-2px);
+}
+
+/* ─── BACK BUTTON ────────────────────────────────────────────────────────── */
+.back-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  transition: background 0.2s, transform 0.2s;
+  flex-shrink: 0;
+}
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateX(-2px);
+}
+.back-btn svg { width: 16px; height: 16px; }
+
+/* ─── SPINNER ────────────────────────────────────────────────────────────── */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── CONTENT AREA ───────────────────────────────────────────────────────── */
+.content-area {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  display: flex;
+  gap: 18px;
+  padding: 18px 24px;
+  overflow: hidden;
+}
+
+/* ─── INTERACTIVE CARD BASE (apply to any tiltable element) ──────────────── */
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s ease;
+  will-change: transform;
+}
+.tilt-card:hover {
+  transform: perspective(800px) rotateX(-2deg) rotateY(3deg) translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ─── ZOOM-IN HOVER ──────────────────────────────────────────────────────── */
+.zoom-hover {
+  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s ease;
+  will-change: transform;
+}
+.zoom-hover:hover {
+  transform: scale(1.035) translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ─── FLIP CARD (front/back) ─────────────────────────────────────────────── */
+.flip-wrap {
+  perspective: 1000px;
+}
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s var(--ease-out-expo);
+}
+.flip-wrap:hover .flip-inner {
+  transform: rotateY(180deg);
+}
+.flip-front,
+.flip-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: inherit;
+}
+.flip-back {
+  transform: rotateY(180deg);
+}
+
+/* ─── SHIMMER LOADING ────────────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.06) 25%,
+    rgba(255,255,255,0.14) 50%,
+    rgba(255,255,255,0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.8s infinite;
+}
+
+/* ─── ANIMATED ACCENT BORDER ─────────────────────────────────────────────── */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes borderSpin { to { --angle: 360deg; } }
+
+.accent-border {
+  position: relative;
+  border-radius: var(--r-lg);
+}
+.accent-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--angle),
+    transparent 0deg,
+    transparent 200deg,
+    var(--accent) 240deg,
+    rgba(255,255,255,0.6) 270deg,
+    var(--accent) 305deg,
+    transparent 350deg
+  );
+  animation: borderSpin 5s linear infinite;
+  z-index: -1;
+  opacity: 0.8;
+}
+
+/* ─── TEXT SHADOW FOR READABILITY ABOVE PHOTOS ───────────────────────────── */
+.text-shadow {
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.text-shadow-strong {
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.5);
+}
