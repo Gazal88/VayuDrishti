@@ -107,4 +107,4 @@ score = (base_aqi_risk + heat_bonus + pm25_bonus)
 
 Score range 0–10. Fully deterministic — the AI explains the number, never invents it.
 
----
+
